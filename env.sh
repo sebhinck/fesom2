@@ -25,6 +25,7 @@ else
    LOGINHOST=$1
 fi
 
+
 if [[ $LOGINHOST =~ ^m[A-Za-z0-9]+\.hpc\.dkrz\.de$ ]]; then
    STRATEGY="mistral.dkrz.de"
 elif [[ $LOGINHOST =~ ^ollie[0-9]$ ]] || [[ $LOGINHOST =~ ^prod-[0-9]{4}$ ]]; then
@@ -52,6 +53,8 @@ elif [[  $LOGINHOST =~ ^jwlogin2[0-9].juwels$ ]] || [[ $LOGINHOST =~ ^jwb[0-9]{4
    STRATEGY="juwels-booster"
 elif [[ $LOGINHOST =~ ^cc[a-b]+-login[0-9]+\.ecmwf\.int$ ]]; then
    STRATEGY="ecaccess.ecmwf.int"
+elif [[  $LOGINHOST =~ pd-dgx-a100.dmawi.de  ]]; then
+   STRATEGY="pd-dgx-a100"
 else
    echo "can not determine environment for host: "$LOGINHOST
    [ $BEING_EXECUTED = true ] && exit 1

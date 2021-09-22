@@ -1,0 +1,51 @@
+
+nvhome=/sw/hpc-sdk
+target=Linux_x86_64
+version=21.3
+
+nvcudadir=$nvhome/$target/$version/cuda
+nvcompdir=$nvhome/$target/$version/compilers
+nvmathdir=$nvhome/$target/$version/math_libs
+nvcommdir=$nvhome/$target/$version/comm_libs
+
+export NVHP=$nvhome
+export CC=$nvcompdir/bin/nvc
+export CXX=$nvcompdir/bin/nvc++
+export FC=$nvcompdir/bin/nvfortran
+export F90=$nvcompdir/bin/nvfortran
+export F77=$nvcompdir/bin/nvfortran
+export CPP=cpp
+
+pre_path="$nvcudadir/bin:$nvcompdir/bin:$nvcommdir/mpi/bin"
+
+if [[ ! "$PATH" == *${pre_path}* ]]; then
+  export PATH="${pre_path}${PATH:+:${PATH}}"
+fi
+
+
+
+
+
+pre_ld_path="$nvcudadir/lib64:$nvcudadir/extras/CUPTI/lib64:$nvcompdir/lib:$nvmathdir/lib64:$nvcommdir/mpi/lib:$nvcommdir/nccl/lib:$nvcommdir/nvshmem/lib"
+
+if [[ ! "$LD_LIBRARY_PATH" == *${pre_ld_path}* ]]; then
+  export LD_LIBRARY_PATH="${pre_ld_path}${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}"
+fi
+
+pre_cpath="$nvmathdir/include:$nvcommdir/mpi/include:$nvcommdir/nccl/include:$nvcommdir/nvshmem/include"
+
+if [[ ! "$CPATH" == *${pre_cpath}* ]]; then
+  export CPATH="${pre_cpath}${CPATH:+:${CPATH}}"
+fi
+
+export OPAL_PREFIX=$nvcommdir/mpi
+
+#Override with MPI compilers
+export FC=mpifort CC=mpicc CXX=mpicxx
+
+export NETCDF_DIR=$LOCAL
+export NETCDFF_DIR=$LOCAL
+export NETCDF_Fortran_INCLUDE_DIRECTORIES=${NETCDFF_DIR}/include/
+export NETCDF_C_INCLUDE_DIRECTORIES=${NETCDF_DIR}/include/
+export NETCDF_CXX_INCLUDE_DIRECTORIES=${NETCDFCXX_DIR}/include/
+
